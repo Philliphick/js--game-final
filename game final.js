@@ -207,29 +207,44 @@ class Room {
   
   function inInventory(newItem) {
     const userInput = document.getElementById("usertext").value;
-    let pickupMsg = "";
+    let pickupMessage = "";
     // const currentRoomItems = currentRoom.getItems();
     if(userInput.toLowerCase().includes(`pick up ${newItem.toLowerCase()}`)){
         inventory.push(newItem);
         console.log(`${newItem} has been added`);
-        return pickupMsg = `You picked up ${newItem}. It has been added to your inventory.`
-    }
-        return pickupMsg;
+        pickupMessage = `You picked up ${newItem}. It has been added to your inventory.`;
+        console.log(pickupMessage)
+      
+    } 
+       return pickupMessage
     }
 
    function displayRoomInfo(room) {
     let occupantMsg = ""
     if (room.character === "") {
       occupantMsg = ""
+    // } else if(room === SecretArchives && inventory.includes("ID Badge")) {
+    //     occupantMsg = "You're greeted by armed security personel" + ". " + room.character.converse() + "<br></br>" +
+    //     "You can leave and go back <b>south</b> to the control room, or try your luck and <b>show</b> the <b>id badge</b> you found";
+    
+    } else if(room === SecretArchives && inventory.includes("id badge")) {
+      occupantMsg = "You're greeted by armed security personel" + ". " + room.character.converse() + "<p> <br>" +
+      "You can leave and go back <b>south</b> to the Underground Tunnel, or try your luck and <b>show</b> the <b>id badge</b> you found." + "</p> <br>";
+    
     } else if(room === SecretArchives) {
-        occupantMsg = "You're greeted by armed security personel" + ". " + room.character.converse();
+      occupantMsg = "You're greeted by armed security personel" + ". " + room.character.converse() + "<br></br>"
+    
+  
+    
     
     } else {
   
       occupantMsg = room.character.describe() + ". " + room.character.converse()
     }
 
-    const pickupMsg = inInventory("ID Badge");
+    // const pickupMsg = inInventory("ID Badge");
+
+    // console.log(pickupMsg);
   
     let textContent = "<p>" + room.describe() + "</p>" + "<p>" +
       occupantMsg + "</p>" + "<p>" + room.getDetails().join("<br/>") + "</p>";
@@ -239,9 +254,14 @@ class Room {
     document.getElementById("usertext").innerHTML = '><input type="text" id="usertext" />';
     document.getElementById("usertext").focus();
 
-    if (pickupMsg !== "") {
-        document.getElementById("textarea").innerHTML += "<p>" + pickupMsg + "</p>";
-    }
+    // if (pickupMsg !== "") {
+    //     document.getElementById("textarea").innerHTML += "<p>" + pickupMsg + "</p>";
+    // }
+  }
+
+  function showWin() {
+    document.getElementById("textarea").innerHTML = "WELL DONE! YOU HAVE SUCCESSFULLY INFILTRATED THE ENEMY!" + "<br><button id='startButton' class='bg-white p-2 border-black rounded-md hover:bg-gray-700 hover:text-white'>Start Game</button>";
+    document.getElementById("startButton").addEventListener("click", startGame);
   }
   
   function startGame() {
@@ -257,16 +277,40 @@ class Room {
         const directions = ["north", "south", "east", "west"];
 
         if (directions.includes(command.toLowerCase())) {
+          console.log("Before Move:", currentRoom.name)
           currentRoom = currentRoom.move(command)
+          console.log("After Move:", currentRoom.name)
           document.getElementById("usertext").value = ""
           displayRoomInfo(currentRoom);
         } else if(command.toLowerCase().startsWith("pick up")){
-            const itemName = command.substring(8).trim();
-            inInventory(itemName);
+            const pickItem = command.substring(8).trim();
+            console.log("this is getting called here")
+            const val = inInventory(pickItem);
+            console.log(val)
+            document.getElementById("notificationUser").innerHTML = val;
+            setTimeout(() => {
+                document.getElementById("notificationUser").innerHTML = "";
+            }, 5000);
             document.getElementById("usertext").value = "";
             displayRoomInfo(currentRoom);
+         } 
+        else if(command.toLowerCase().startsWith("show")) {
+          const showItem = command.substring(5).trim();
+          document.getElementById("notificationUser").innerHTML = "Well Done, you have successfully infilrated the enemy";
+            setTimeout(() => {
+                document.getElementById("notificationUser").innerHTML = "";
+            }, 10000);
+            document.getElementById("usertext").value = "";
+            showWin();
+            // displayRoomInfo(currentRoom);
+
+        } else if (command.toLowerCase() === "tunnel") {
+          currentRoom = UndergroundTunnel;
+          inventory.push("id badge");
+          document.getElementById("usertext").value = "";
+          displayRoomInfo(currentRoom);
+
         }
-        
         else {
           document.getElementById("usertext").value = ""
           alert("that is not a valid command please try again")
