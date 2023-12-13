@@ -3,19 +3,20 @@
   <head>
     <!--required meta--> 
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--Bootstrap css-->
     <script src="https://cdn.tailwindcss.com"></script>
     <!--Custom css-->
   </head>
-  <body class="bg-gray-700 font-mono">
-    <h1 class="text-7xl text-center mt-8 text-white">Spy Infiltration</h1>
-    <div class="container mx-28 my-10 p-20 w-screen bg-gray-200">
-      <div id="gamearea">
-        <div id="details">
+  <body class="bg-gradient-to-br from-slate-500 to-blue-400 font-mono h-screen">
+    <h1 class="text-7xl text-center mt-16 text-white">Spy Infiltration</h1>
+    <div class="container mx-auto my-10 p-10 w-screen bg-gradient-to-br from-slate-600 to-blue-500">
+      <div class="bg-gradient-to-br from-slate-500 to-blue-400 h-full p-10">
+      <div id="gamearea" class="">
+        <div id="details" class="">
             <!--content-->
-            <div class="justify-content-center mx-auto text-center text-xl">
-              <p id="textarea" class="text-center leading-loose text-2xl"></p>
+            <div class="justify-content-center mx-auto text-center text-xl ">
+              <p id="textarea" class="text-center leading-loose text-2xl md:text-3xl md:leading-loose lg:text-4xl lg:leading-loose"></p>
               <p id="secondtextarea" class="text-center leading-loose text-2xl"></p>
               <p id="notificationUser" class="" ></p>
               <br /><br />
@@ -24,6 +25,7 @@
         </div>
         <p id="notificationUser" class="" ></p>
       </div>
+    </div>
     </div>
     <!-- link to external JavaScript-->
     <script src="game final.js"></script>

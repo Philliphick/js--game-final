@@ -263,8 +263,23 @@ class Room {
     document.getElementById("textarea").innerHTML = "WELL DONE! YOU HAVE SUCCESSFULLY INFILTRATED THE ENEMY!" + "<br><button id='startButton' class='bg-white p-2 border-black rounded-md hover:bg-gray-700 hover:text-white'>Start Game</button>";
     document.getElementById("startButton").addEventListener("click", startGame);
   }
+
+  function showLose() {
+    document.getElementById("textarea").innerHTML = "YOU'VE BEEN CAUGHT! <br> There were armed security on the door and your current ID doesn't authorise you to enter this room" + "<br><button id='startButton' class='bg-white p-2 border-black rounded-md hover:bg-gray-700 hover:text-white'>Try Again</button>";
+    document.getElementById("startButton").addEventListener("click", startGame);
+  }
+  
+  // function startView() {
+  //   document.getElementById("textarea").innerHTML = "SPY INFILTRATION" + "<br><button id='startButton' class='bg-white p-2 border-black rounded-md hover:bg-gray-700 hover:text-white'>Start Game</button>";
+  //   document.getElementById("startButton").addEventListener("click", startGame);
+  // }
   
   function startGame() {
+    
+
+
+    // remove any existing event listener - to stop having multiple on a games restart. 
+    
     //set and display start room
     currentRoom = EntranceLobby;
     console.log (currentRoom);
@@ -277,11 +292,13 @@ class Room {
         const directions = ["north", "south", "east", "west"];
 
         if (directions.includes(command.toLowerCase())) {
-          console.log("Before Move:", currentRoom.name)
           currentRoom = currentRoom.move(command)
           console.log("After Move:", currentRoom.name)
           document.getElementById("usertext").value = ""
           displayRoomInfo(currentRoom);
+          if(currentRoom === SecretArchives && !inventory.includes("id badge")){
+            showLose();
+          }
         } else if(command.toLowerCase().startsWith("pick up")){
             const pickItem = command.substring(8).trim();
             console.log("this is getting called here")
